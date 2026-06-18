@@ -20,4 +20,9 @@ class Item extends Model
     {
         return $this->hasMany(InboundTransaction::class);
     }
+
+    public function outboundTransactions()
+    {
+        return $this->hasMany(OutboundTransaction::class);
+    }
 }
