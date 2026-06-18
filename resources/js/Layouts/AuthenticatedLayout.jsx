@@ -53,15 +53,18 @@ export default function AuthenticatedLayout({ children }) {
                         <HomeIcon className="w-5 h-5" />
                         <span>Dashboard</span>
                     </Link>
-                    <Link href="#" className={linkStyle}>
+                    <Link href={route("inbound.index")} className={linkStyle}>
                         <ArrowDownTrayIcon className="w-5 h-5" />
                         <span>Barang Masuk</span>
                     </Link>
-                    <Link href="#" className={linkStyle}>
+                    <Link href={route("outbound.index")} className={linkStyle}>
                         <ArrowUpTrayIcon className="w-5 h-5" />
                         <span>Barang Keluar</span>
                     </Link>
-                    <Link href="#" className={linkStyle}>
+                    <Link
+                        href={route("stock-adjustments.index")}
+                        className={linkStyle}
+                    >
                         <ClipboardDocumentCheckIcon className="w-5 h-5" />
                         <span>Stock Opname</span>
                     </Link>

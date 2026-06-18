@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import {
     PlusIcon,
     PencilSquareIcon,
@@ -66,10 +66,35 @@ export default function Index({ items }) {
                                             {item.current_stock}
                                         </td>
                                         <td className="p-4 flex justify-center gap-3">
-                                            <button className="text-blue-600 hover:text-blue-800">
+                                            {/* Tombol Edit */}
+                                            <Link
+                                                href={route(
+                                                    "items.edit",
+                                                    item.id,
+                                                )}
+                                                className="text-blue-600 hover:text-blue-800 transition"
+                                            >
                                                 <PencilSquareIcon className="w-5 h-5" />
-                                            </button>
-                                            <button className="text-red-600 hover:text-red-800">
+                                            </Link>
+
+                                            {/* Tombol Hapus */}
+                                            <button
+                                                onClick={() => {
+                                                    if (
+                                                        confirm(
+                                                            "Yakin ingin menghapus barang ini?",
+                                                        )
+                                                    ) {
+                                                        router.delete(
+                                                            route(
+                                                                "items.destroy",
+                                                                item.id,
+                                                            ),
+                                                        );
+                                                    }
+                                                }}
+                                                className="text-red-600 hover:text-red-800 transition"
+                                            >
                                                 <TrashIcon className="w-5 h-5" />
                                             </button>
                                         </td>
