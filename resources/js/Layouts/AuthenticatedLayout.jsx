@@ -85,11 +85,17 @@ export default function AuthenticatedLayout({ children }) {
                                 <CircleStackIcon className="w-5 h-5" />
                                 <span>Data Master</span>
                             </Link>
-                            <Link href="#" className={linkStyle}>
+                            <Link
+                                href={route("users.index")}
+                                className={linkStyle}
+                            >
                                 <UsersIcon className="w-5 h-5" />
                                 <span>Manajemen Staf</span>
                             </Link>
-                            <Link href="#" className={linkStyle}>
+                            <Link
+                                href={route("reports.index")}
+                                className={linkStyle}
+                            >
                                 <DocumentChartBarIcon className="w-5 h-5" />
                                 <span>Laporan & Mutasi</span>
                             </Link>
