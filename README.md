@@ -1,8 +1,8 @@
-Warehouse Management System (WMS)
+_Warehouse Management System (WMS)_
 
 sistem manajemen gudang modern yang dibangun untuk efisiensi operasional, pelacakan stok real-time, dan manajemen transaksi keluar-masuk barang. Sistem ini dirancang untuk kemudahan penggunaan bagi staf gudang dan fitur pelaporan yang komprehensif untuk pengelola bisnis.
 
-🚀 Fitur Utama
+_🚀 Fitur Utama_
 
 Dashboard Visual: Monitor metrik gudang seperti Total SKU, Peringatan Stok Rendah (Low Stock Alert), dan Tren Pergerakan Barang (Inbound/Outbound).
 
@@ -16,7 +16,7 @@ Pelaporan: Export laporan stok dan mutasi barang ke dalam format PDF.
 
 Keamanan: Manajemen akses staf dan otentikasi yang aman.
 
-🛠 Tech Stack
+_🛠 Tech Stack_
 
 Framework: Laravel 11
 
@@ -34,7 +34,7 @@ React-Barcode (Label Printing)
 
 Heroicons (UI Icons)
 
-📋 Prasyarat
+_📋 Prasyarat_
 
 Sebelum memulai, pastikan Anda telah menginstal:
 
@@ -46,29 +46,25 @@ Node.js & NPM
 
 MySQL/MariaDB
 
-⚙️ Instalasi
+_⚙️ Instalasi_
 
 Clone repository ini
 
 git clone https://github.com/username/logikeep.git
 cd logikeep
 
-
 Instal dependensi PHP
 
 composer install
-
 
 Instal dependensi Node.js
 
 npm install
 
-
 Konfigurasi Environment
 
 cp .env.example .env
 php artisan key:generate
-
 
 Sesuaikan pengaturan database di dalam file .env.
 
@@ -76,20 +72,20 @@ Migrasi Database
 
 php artisan migrate --seed
 
-
 Jalankan Aplikasi
 
 # Di satu terminal
+
 npm run dev
 
 # Di terminal lainnya
-php artisan serve
 
+php artisan serve
 
 🤝 Kontribusi
 
 Saran dan pull request sangat dihargai. Untuk perubahan besar, harap buka issue terlebih dahulu untuk mendiskusikan apa yang ingin Anda ubah.
 
-📄 Lisensi
+_📄 Lisensi_
 
 MIT
