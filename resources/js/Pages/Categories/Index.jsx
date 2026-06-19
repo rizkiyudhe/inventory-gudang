@@ -4,67 +4,53 @@ import {
     PlusIcon,
     PencilSquareIcon,
     TrashIcon,
-    QrCodeIcon,
 } from "@heroicons/react/24/outline";
 
-export default function Index({ items }) {
+export default function Index({ categories }) {
     return (
         <AuthenticatedLayout>
-            <Head title="Master Produk" />
+            <Head title="Master Kategori" />
             <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-xl font-bold text-gray-800">
-                        Master Produk
+                        Master Kategori
                     </h2>
                     <Link
-                        href={route("items.create")}
+                        href={route("categories.create")}
                         className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition"
                     >
-                        <PlusIcon className="w-5 h-5" /> Tambah Produk
+                        <PlusIcon className="w-5 h-5" /> Tambah Kategori
                     </Link>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-gray-100 text-gray-700 text-sm uppercase tracking-wider">
-                                <th className="p-4 border-b">SKU</th>
-                                <th className="p-4 border-b">Nama Produk</th>
-                                <th className="p-4 border-b">Kategori</th>
+                                <th className="p-4 border-b">Nama Kategori</th>
+                                <th className="p-4 border-b">Deskripsi</th>
                                 <th className="p-4 border-b text-center">
                                     Aksi
                                 </th>
                             </tr>
                         </thead>
                         <tbody className="text-gray-600 text-sm">
-                            {items.data.map((item) => (
+                            {categories.data.map((cat) => (
                                 <tr
-                                    key={item.id}
+                                    key={cat.id}
                                     className="hover:bg-gray-50 border-b"
                                 >
-                                    <td className="p-4 font-mono font-bold text-gray-800">
-                                        {item.sku}
-                                    </td>
-                                    <td className="p-4 font-semibold">
-                                        {item.name}
+                                    <td className="p-4 font-bold text-gray-800">
+                                        {cat.name}
                                     </td>
                                     <td className="p-4">
-                                        {item.category?.name || "-"}
+                                        {cat.description || "-"}
                                     </td>
                                     <td className="p-4 flex justify-center gap-3">
-                                        <a
-                                            href={route(
-                                                "items.barcode",
-                                                item.id,
-                                            )}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="text-gray-600 hover:text-gray-900"
-                                            title="Cetak Barcode Label"
-                                        >
-                                            <QrCodeIcon className="w-5 h-5" />
-                                        </a>
                                         <Link
-                                            href={route("items.edit", item.id)}
+                                            href={route(
+                                                "categories.edit",
+                                                cat.id,
+                                            )}
                                             className="text-blue-600 hover:text-blue-800"
                                         >
                                             <PencilSquareIcon className="w-5 h-5" />
@@ -72,12 +58,14 @@ export default function Index({ items }) {
                                         <button
                                             onClick={() => {
                                                 if (
-                                                    confirm("Hapus produk ini?")
+                                                    confirm(
+                                                        "Hapus kategori ini?",
+                                                    )
                                                 )
                                                     router.delete(
                                                         route(
-                                                            "items.destroy",
-                                                            item.id,
+                                                            "categories.destroy",
+                                                            cat.id,
                                                         ),
                                                     );
                                             }}

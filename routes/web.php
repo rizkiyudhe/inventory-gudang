@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InboundController;
 use App\Http\Controllers\OutboundController;
 use App\Http\Controllers\StockAdjustmentController;
@@ -44,10 +46,30 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
 
-    // Rute Laporan
-    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
-    Route::get('/reports/export/excel', [ReportController::class, 'exportExcel'])->name('reports.export.excel');
-    Route::get('/reports/export/pdf', [ReportController::class, 'exportPdf'])->name('reports.export.pdf');
+    //Master Kategori
+    Route::resource('categories', CategoryController::class)->except(['show']);
+
+    //Master Supplier
+    Route::resource('suppliers', SupplierController::class)->except(['show']);
+
+    //Master Produk (CRUD Item)
+    Route::resource('items', ItemController::class)->except(['show']);
+
+    //Data Stok
+    Route::get('/data-stok', [ItemController::class, 'stockIndex'])->name('items.stock');
+
+    // Rute Semua Laporan
+    Route::get('/reports/stok', [ReportController::class, 'index'])->name('reports.stok');
+    Route::get('/reports/stok/excel', [ReportController::class, 'exportExcel'])->name('reports.export.excel');
+    Route::get('/reports/stok/pdf', [ReportController::class, 'exportPdf'])->name('reports.export.pdf');
+
+    Route::get('/reports/inbound', [ReportController::class, 'inbound'])->name('reports.inbound');
+    Route::get('/reports/inbound/excel', [ReportController::class, 'exportInboundExcel'])->name('reports.inbound.excel');
+    Route::get('/reports/inbound/pdf', [ReportController::class, 'exportInboundPdf'])->name('reports.inbound.pdf');
+
+    Route::get('/reports/outbound', [ReportController::class, 'outbound'])->name('reports.outbound');
+    Route::get('/reports/outbound/excel', [ReportController::class, 'exportOutboundExcel'])->name('reports.outbound.excel');
+    Route::get('/reports/outbound/pdf', [ReportController::class, 'exportOutboundPdf'])->name('reports.outbound.pdf');
 });
 
 Route::middleware('auth')->group(function () {
@@ -65,6 +87,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/stock-adjustments', [StockAdjustmentController::class, 'index'])->name('stock-adjustments.index');
     Route::get('/stock-adjustments/create', [StockAdjustmentController::class, 'create'])->name('stock-adjustments.create');
     Route::post('/stock-adjustments', [StockAdjustmentController::class, 'store'])->name('stock-adjustments.store');
+
+    Route::get('/items/{item}/barcode', [ItemController::class, 'printBarcode'])->name('items.barcode');
+    Route::resource('items', ItemController::class)->except(['show']);
+    Route::get('/data-stok', [ItemController::class, 'stockIndex'])->name('items.stock');
 
     //peofile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

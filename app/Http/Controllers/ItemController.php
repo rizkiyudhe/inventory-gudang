@@ -3,76 +3,85 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
-use App\Models\Category; // WAJIB DITAMBAHKAN
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ItemController extends Controller
 {
+    // 1. MASTER PRODUK (Hanya Identitas)
     public function index()
     {
         $items = Item::with('category')->latest()->paginate(10);
-        return Inertia::render('Items/Index', [
-            'items' => $items
-        ]);
+        return Inertia::render('Items/Index', ['items' => $items]);
     }
 
+    // 2. DATA STOK (Hanya Kuantitas)
+    public function stockIndex()
+    {
+        $items = Item::with('category')->latest()->paginate(10);
+        return Inertia::render('Items/Stock', ['items' => $items]);
+    }
+
+    // FORM TAMBAH
     public function create()
     {
-        $categories = Category::all();
-
-        return Inertia::render('Items/Create', [
-            'categories' => $categories
+        return Inertia::render('Items/Form', [
+            'categories' => Category::all()
         ]);
     }
 
+    // SIMPAN DATA
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'sku' => 'required|string|unique:items,sku|max:255',
+            'sku' => 'required|string|max:255|unique:items',
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'min_stock' => 'required|integer|min:0',
-            'current_stock' => 'required|integer|min:0',
+            'current_stock' => 'required|integer|min:0', // Stok awal
         ]);
 
         Item::create($validated);
-
         return redirect()->route('items.index');
     }
 
-    // MENAMPILKAN FORM EDIT
+    // FORM EDIT
     public function edit(Item $item)
     {
-        $categories = Category::all();
-
-        return Inertia::render('Items/Edit', [
+        return Inertia::render('Items/Form', [
             'item' => $item,
-            'categories' => $categories
+            'categories' => Category::all()
         ]);
     }
 
-    // MENYIMPAN PERUBAHAN KE DATABASE
+    // UPDATE DATA
     public function update(Request $request, Item $item)
     {
         $validated = $request->validate([
-            // Pengecualian unik SKU agar tidak error saat menyimpan SKU yang sama untuk barang ini
             'sku' => 'required|string|max:255|unique:items,sku,' . $item->id,
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'min_stock' => 'required|integer|min:0',
-            'current_stock' => 'required|integer|min:0',
+            // current_stock tidak diupdate dari sini, harus lewat fitur Inbound/Outbound/Opname
         ]);
 
         $item->update($validated);
-
         return redirect()->route('items.index');
     }
 
-    // MENGHAPUS BARANG 
+    // HAPUS DATA
     public function destroy(Item $item)
     {
         $item->delete();
         return redirect()->back();
+    }
+
+    // HALAMAN CETAK BARCODE
+    public function printBarcode(Item $item)
+    {
+        return Inertia::render('Items/PrintBarcode', [
+            'item' => $item->load('category')
+        ]);
     }
 }

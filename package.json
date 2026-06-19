@@ -22,6 +22,7 @@
         "vite": "^6.0.11"
     },
     "dependencies": {
-        "@heroicons/react": "^2.2.0"
+        "@heroicons/react": "^2.2.0",
+        "react-barcode": "^1.6.1"
     }
 }

@@ -10,6 +10,7 @@ import {
     DocumentChartBarIcon,
     Bars3Icon,
     XMarkIcon,
+    ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 
 export default function AuthenticatedLayout({ children }) {
@@ -21,9 +22,23 @@ export default function AuthenticatedLayout({ children }) {
     const { auth } = usePage().props;
     const user = auth.user;
 
+    // State untuk Dropdown Data Master
+    const [isMasterOpen, setIsMasterOpen] = useState(
+        route().current("categories.*") ||
+            route().current("suppliers.*") ||
+            route().current("items.*"),
+    );
+
+    // State untuk Dropdown Laporan
+    const [isReportOpen, setIsReportOpen] = useState(
+        route().current("reports.*"),
+    );
+
     // Helper untuk style Link agar seragam
     const linkStyle =
         "flex items-center gap-3 py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white";
+    const subLinkStyle =
+        "flex items-center gap-3 py-2 pl-11 pr-4 rounded text-sm text-gray-400 hover:bg-gray-800 hover:text-white transition duration-150";
 
     return (
         <div className="min-h-screen bg-gray-100 flex">
@@ -53,17 +68,23 @@ export default function AuthenticatedLayout({ children }) {
                         <HomeIcon className="w-5 h-5" />
                         <span>Dashboard</span>
                     </Link>
-                    <Link href={route("inbound.index")} className={linkStyle}>
+                    <Link
+                        href={route("inbound.index")}
+                        className={`${linkStyle} ${route().current("inbound.*") ? "bg-gray-800 text-white" : ""}`}
+                    >
                         <ArrowDownTrayIcon className="w-5 h-5" />
                         <span>Barang Masuk</span>
                     </Link>
-                    <Link href={route("outbound.index")} className={linkStyle}>
+                    <Link
+                        href={route("outbound.index")}
+                        className={`${linkStyle} ${route().current("outbound.*") ? "bg-gray-800 text-white" : ""}`}
+                    >
                         <ArrowUpTrayIcon className="w-5 h-5" />
                         <span>Barang Keluar</span>
                     </Link>
                     <Link
                         href={route("stock-adjustments.index")}
-                        className={linkStyle}
+                        className={`${linkStyle} ${route().current("stock-adjustments.*") ? "bg-gray-800 text-white" : ""}`}
                     >
                         <ClipboardDocumentCheckIcon className="w-5 h-5" />
                         <span>Stock Opname</span>
@@ -74,31 +95,108 @@ export default function AuthenticatedLayout({ children }) {
 
                     {/* Menu Khusus Admin */}
                     {user.role === "admin" && (
-                        <div>
+                        <div className="space-y-1">
                             <p className="px-4 text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
                                 Administrator
                             </p>
-                            <Link
-                                href={route("items.index")}
-                                className={linkStyle}
-                            >
-                                <CircleStackIcon className="w-5 h-5" />
-                                <span>Data Master</span>
-                            </Link>
+
+                            {/* MENU DROPDOWN DATA MASTER */}
+                            <div>
+                                <button
+                                    onClick={() =>
+                                        setIsMasterOpen(!isMasterOpen)
+                                    }
+                                    className={`w-full text-left ${linkStyle} ${route().current("categories.*") || route().current("suppliers.*") || route().current("items.*") ? "bg-gray-800 text-white" : ""} flex justify-between items-center`}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <CircleStackIcon className="w-5 h-5" />
+                                        <span>Data Master</span>
+                                    </div>
+                                    <ChevronDownIcon
+                                        className={`w-4 h-4 transition-transform duration-200 ${isMasterOpen ? "transform rotate-180" : ""}`}
+                                    />
+                                </button>
+
+                                {/* Sub-menu Data Master */}
+                                {isMasterOpen && (
+                                    <div className="mt-1 space-y-1 bg-gray-900 bg-opacity-40 rounded-md py-1.5 mx-1">
+                                        <Link
+                                            href={route("categories.index")}
+                                            className={`${subLinkStyle} ${route().current("categories.*") ? "text-white font-medium bg-gray-800" : ""}`}
+                                        >
+                                            Master Kategori
+                                        </Link>
+                                        <Link
+                                            href={route("items.index")}
+                                            className={`${subLinkStyle} ${route().current("items.index") || route().current("items.create") || route().current("items.edit") ? "text-white font-medium bg-gray-800" : ""}`}
+                                        >
+                                            Master Produk
+                                        </Link>
+                                        <Link
+                                            href={route("suppliers.index")}
+                                            className={`${subLinkStyle} ${route().current("suppliers.*") ? "text-white font-medium bg-gray-800" : ""}`}
+                                        >
+                                            Master Supplier
+                                        </Link>
+                                        <Link
+                                            href={route("items.stock")}
+                                            className={`${subLinkStyle} ${route().current("items.stock") ? "text-white font-medium bg-gray-800" : ""}`}
+                                        >
+                                            Data Stok
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
+
                             <Link
                                 href={route("users.index")}
-                                className={linkStyle}
+                                className={`${linkStyle} ${route().current("users.*") ? "bg-gray-800 text-white" : ""}`}
                             >
                                 <UsersIcon className="w-5 h-5" />
                                 <span>Manajemen Staf</span>
                             </Link>
-                            <Link
-                                href={route("reports.index")}
-                                className={linkStyle}
-                            >
-                                <DocumentChartBarIcon className="w-5 h-5" />
-                                <span>Laporan & Mutasi</span>
-                            </Link>
+
+                            {/* MENU DROPDOWN LAPORAN */}
+                            <div>
+                                <button
+                                    onClick={() =>
+                                        setIsReportOpen(!isReportOpen)
+                                    }
+                                    className={`w-full text-left ${linkStyle} ${route().current("reports.*") ? "bg-gray-800 text-white" : ""} flex justify-between items-center`}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <DocumentChartBarIcon className="w-5 h-5" />
+                                        <span>Laporan</span>
+                                    </div>
+                                    <ChevronDownIcon
+                                        className={`w-4 h-4 transition-transform duration-200 ${isReportOpen ? "transform rotate-180" : ""}`}
+                                    />
+                                </button>
+
+                                {/* Sub-menu Laporan */}
+                                {isReportOpen && (
+                                    <div className="mt-1 space-y-1 bg-gray-900 bg-opacity-40 rounded-md py-1.5 mx-1">
+                                        <Link
+                                            href={route("reports.stok")}
+                                            className={`${subLinkStyle} ${route().current("reports.stok") ? "text-white font-medium bg-gray-800" : ""}`}
+                                        >
+                                            Laporan Stok
+                                        </Link>
+                                        <Link
+                                            href={route("reports.inbound")}
+                                            className={`${subLinkStyle} ${route().current("reports.inbound") ? "text-white font-medium bg-gray-800" : ""}`}
+                                        >
+                                            Laporan Barang Masuk
+                                        </Link>
+                                        <Link
+                                            href={route("reports.outbound")}
+                                            className={`${subLinkStyle} ${route().current("reports.outbound") ? "text-white font-medium bg-gray-800" : ""}`}
+                                        >
+                                            Laporan Barang Keluar
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
                 </nav>
