@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OutboundTransaction extends Model
 {
-    protected $fillable = ['item_id', 'user_id', 'quantity', 'destination', 'date', 'notes'];
+    protected $fillable = ['item_id', 'user_id', 'quantity', 'destination', 'date', 'notes', 'invoice_id', 'price', 'total'];
 
     public function item()
     {
@@ -15,5 +15,9 @@ class OutboundTransaction extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
     }
 }

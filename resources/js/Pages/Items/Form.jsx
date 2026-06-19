@@ -101,6 +101,23 @@ export default function Form({ item, categories }) {
                         )}
                     </div>
 
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Harga Jual (Rp)
+                        </label>
+                        <input
+                            type="number"
+                            value={data.price || ""}
+                            onChange={(e) => setData("price", e.target.value)}
+                            className="w-full border-gray-300 focus:ring-indigo-500 rounded-md shadow-sm"
+                        />
+                        {errors.price && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {errors.price}
+                            </p>
+                        )}
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-md border border-gray-100">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">

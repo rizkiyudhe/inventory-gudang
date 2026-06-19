@@ -82,6 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/outbound', [OutboundController::class, 'index'])->name('outbound.index');
     Route::get('/outbound/create', [OutboundController::class, 'create'])->name('outbound.create');
     Route::post('/outbound', [OutboundController::class, 'store'])->name('outbound.store');
+    Route::get('/outbound/invoice/{invoice}', [OutboundController::class, 'invoice'])->name('outbound.invoice');
 
     // Rute Stock Opname
     Route::get('/stock-adjustments', [StockAdjustmentController::class, 'index'])->name('stock-adjustments.index');

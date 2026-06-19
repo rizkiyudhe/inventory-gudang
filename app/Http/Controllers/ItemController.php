@@ -38,6 +38,7 @@ class ItemController extends Controller
             'sku' => 'required|string|max:255|unique:items',
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric|min:0',
             'min_stock' => 'required|integer|min:0',
             'current_stock' => 'required|integer|min:0', // Stok awal
         ]);
@@ -62,6 +63,7 @@ class ItemController extends Controller
             'sku' => 'required|string|max:255|unique:items,sku,' . $item->id,
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric|min:0',
             'min_stock' => 'required|integer|min:0',
             // current_stock tidak diupdate dari sini, harus lewat fitur Inbound/Outbound/Opname
         ]);

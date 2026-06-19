@@ -9,7 +9,7 @@ class Item extends Model
 {
     use SoftDeletes; // Wajib dipanggil untuk mengaktifkan Soft Delete
 
-    protected $fillable = ['sku', 'name', 'category_id', 'min_stock', 'current_stock'];
+    protected $fillable = ['sku', 'name', 'category_id', 'min_stock', 'current_stock', 'price'];
 
     public function category()
     {
